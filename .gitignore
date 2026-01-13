@@ -2,7 +2,8 @@
 .DS_Store
 **/.DS_Store
 
-#openQCD1.4
+# openQCD1.4
 openQCD-1.4/
 
-QCDanomalies/*.tar
+QCDanomalies/test_run-09.05.2025.tar
+QCDanomalies/test_run7
