@@ -1,0 +1,41 @@
+
+[Run name]
+name         run1_124
+
+[Directories]
+log_dir      ./log
+dat_dir      ./dat
+loc_dir      ./cnfg
+cnfg_dir     ./cnfg
+
+[Lattice parameters]
+beta         5.96
+c0           1.0
+
+[Boundary conditions]
+type         3
+
+[Random number generator]
+level        0
+seed         21099
+
+[Trajectory length]
+tau          2.0
+
+[MD integrator]
+integrator   OMF4
+lambda       0.19
+nstep        12
+
+[MD trajectories]
+nth          20
+ntr          2000
+dtr_log      20
+dtr_ms       20
+dtr_cnfg     20
+
+[Wilson flow]
+integrator   RK3
+eps          1.0e-2
+nstep        400
+dnms         20
