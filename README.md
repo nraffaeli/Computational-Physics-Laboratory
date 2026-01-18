@@ -1,7 +1,7 @@
 # Computational Physics Laboratory
 
 This repository contains material and code developed for the
-**Computational Physics Laboratory** course.
+**Computational Physics Laboratory** course, the corse is aimed to compute quantum observable by discretizing the conitous theory on a Lattice.
 
 ## Structure
 
@@ -11,9 +11,6 @@ This repository contains material and code developed for the
 - `QCDanomalies/`  
   Numerical studies related to QCD anomalies
 
-- `devel/`  
-  Development and test code
-
 ## Requirements
 
 - C compiler (gcc or clang)
@@ -22,8 +19,8 @@ This repository contains material and code developed for the
 
 ## Notes
 
-- External libraries such as **openQCD** are intentionally excluded
-  from version control.
+- External libraries **openQCD** are intentionally excluded
+  from version control. The version used is **openQCD-1.4**
 - Test runs, numerical outputs and archive files (`.tar`, `.tar.gz`)
   are ignored via `.gitignore`.
 
