@@ -1,9 +1,19 @@
 # macOS
 .DS_Store
-**/.DS_Store
+.vscode/
 
 # openQCD1.4
 openQCD-1.4/
 
-QCDanomalies/test_run-09.05.2025.tar
-QCDanomalies/test_run7
+test_run/
+test_run*/
+QCDanomalies/test_run/
+QCDanomalies/test_run*/
+
+*.tar
+*.tar.gz
+*.tgz
+
+*.log
+*.out
+*.dat
