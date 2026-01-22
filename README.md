@@ -1,7 +1,7 @@
 # Computational Physics Laboratory
 
 This repository contains material and code developed for the
-**Computational Physics Laboratory** course, the corse is aimed to compute quantum observable by discretizing the conitous theory on a Lattice.
+**Computational Physics Laboratory** course, the corse is aimed to compute quantum observable by discretizing the continous theory on a Lattice.
 
 ## Structure
 
