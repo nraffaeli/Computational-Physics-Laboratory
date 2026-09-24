@@ -14,7 +14,7 @@
 #define M 1.0
 #define W 1.0
 #define DELTA 1.0
-#define TAUth 20
+#define TAUth 1000
 #define TAUm 4
 
 #if defined MAIN_PROGRAM

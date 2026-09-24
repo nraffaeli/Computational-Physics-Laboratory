@@ -19,7 +19,7 @@ all: rmxeq mkdep mkxeq
 
 # main programs and required modules 
 
-MAIN = main1
+MAIN = main0 main1
 
 RANDOM = ranlxs ranlxd gauss
 
@@ -34,14 +34,14 @@ MODULES = $(RANDOM) $(START) $(EXTRAS) $(HO)
 
 # search path for modules
 
-MDIR = ../modules
+MDIR = modules
 
-VPATH = $(MDIR)/random:$(MDIR)/start:$(MDIR)/extras:$(MDIR)/ho
+VPATH = $(MDIR)/random:$(MDIR)/start:$(MDIR)/extras:$(MDIR)/ho:main
 
 
 # additional include directories
 
-INCPATH = ../include
+INCPATH = include
 
 
 # additional libraries to be included 

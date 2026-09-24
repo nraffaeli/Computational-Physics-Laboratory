@@ -5,6 +5,9 @@
 # openQCD1.4
 openQCD-1.4/
 
+# local analysis
+analysis/*
+
 test_run/
 test_run*/
 QCDanomalies/test_run/
