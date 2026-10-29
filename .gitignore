@@ -6,7 +6,10 @@
 openQCD-1.4/
 
 # local analysis
-analysis/*
+**/analysis/
+
+# local text and generated run data
+*.txt
 
 test_run/
 test_run*/
@@ -20,3 +23,5 @@ QCDanomalies/test_run*/
 *.log
 *.out
 *.dat
+
+*.pdf

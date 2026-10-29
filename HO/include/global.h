@@ -13,9 +13,11 @@
 #define N 64
 #define M 1.0
 #define W 1.0
+#define SEED 12345
 #define DELTA 1.0
-#define TAUth 1000
-#define TAUm 4
+#define TAU 10
+#define NSTAT 100000
+#define NTHERM 1000
 
 #if defined MAIN_PROGRAM
   #define EXTERN

@@ -19,7 +19,7 @@ all: rmxeq mkdep mkxeq
 
 # main programs and required modules 
 
-MAIN = check1 check2
+MAIN = check0 check1
 
 RANDOM = ranlxs ranlxd gauss
 

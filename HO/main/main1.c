@@ -4,8 +4,8 @@
 * File main1.c
 *
 * Harmonic Oscillator.
-* This program calculates the correlation function and the autocorrelation in 
-* Markovian time. 
+* This program calculates the correlation function and the autocorrelation in
+* Markov time.
 *
 ******************************************************************************/
 
@@ -22,85 +22,96 @@
 
 int main(void)
 {
+   int i, maxLag; // Markov time
+   int j, k; // Physical time
+   int Nsweeps;
+   double Gamma0;
+   double MeanCorrelator[N];
+   double *Correlator;
+   double value;
+   FILE *fCorr;
+   FILE *fRead;
+   FILE *fAuto;
 
-   rlxd_init(1, 12345);
+   rlxd_init(1, SEED);
    ranlxd(xx, N);
 
-   int i, j, k; // Markovian time, physical time, autocorrelation lag
-
    for (j = 0; j < N; j++) xx[j] = 0.0;
-   for (i = 0; i < TAUth; i++) Metropolis();
+   for (i = 0; i < NTHERM; i++) Metropolis();
 
-
-   int Nsweeps = 100000;
-
-   double *MarkovCorr = (double *)malloc(Nsweeps * sizeof(double));
-   if (MarkovCorr == NULL) {
-      perror("Error allocating memory for MarkovCorr");
-      return EXIT_FAILURE;
+   Nsweeps = 100000;
+   maxLag = Nsweeps / 10;
+   if (maxLag > 100) {
+      maxLag = 100;
    }
 
-   double CorrBar[N] = {0.0};
-
-   for (i = 0; i < Nsweeps; i++) {
-      Metropolis();
-      MarkovCorr[i] = ConfCorrelator(1);
-      for (j = 0; j < N; j++) {
-         CorrBar[j] += ConfCorrelator(j);
-      }
-   }
-   for (j = 0; j < N; j++) {
-      CorrBar[j] /= Nsweeps;
-   }
-
-   FILE *fCorr = fopen("Correlator.txt", "w");
+   fCorr = fopen("Correlator.txt", "w");
    if (fCorr == NULL) {
       perror("Error opening Correlator.txt");
-      free(MarkovCorr);
+      free(Correlator);
       return EXIT_FAILURE;
    }
-   for (j = 0; j < N; j++) {
-      fprintf(fCorr, "%d %f\n", j, CorrBar[j]);
+   for (i = 0; i < Nsweeps; i++) {
+      Metropolis();
+      for (j = 0; j < N; j++) {
+         value = ConfCorrelator(j);
+         fprintf(fCorr, "%.15e%s", value, j == N - 1 ? "\n" : " ");
+      }
    }
    fclose(fCorr);
 
-   double MarkovMean = 0.0;
-   for (i = 0; i < Nsweeps; i++) {
-      MarkovMean += MarkovCorr[i];
-   }
-   MarkovMean /= Nsweeps;
-
-   double Gamma0 = 0.0;
-   for (i = 0; i < Nsweeps; i++) {
-      double fluctuation = MarkovCorr[i] - MarkovMean;
-      Gamma0 += fluctuation * fluctuation;
-   }
-   Gamma0 /= Nsweeps;
-
-   FILE *fAuto = fopen("Autocorrelator.txt", "w");
-   if (fAuto == NULL) {
-      perror("Error opening Autocorrelator.txt");
-      free(MarkovCorr);
+   fRead = fopen("Correlator.txt", "r");
+   if (fRead == NULL) {
+      perror("Error opening Correlator.txt for reading");
+      free(Correlator);
       return EXIT_FAILURE;
    }
-   if (Gamma0 == 0.0) {
-      fprintf(stderr, "Cannot calculate autocorrelation: zero variance.\n");
-   } else {
-      int maxLag = 1000;
-      for (k = 0; k < maxLag; k++) {
-         double gamma = 0.0;
-         for (i = 0; i < Nsweeps - k; i++) {
-            gamma += (MarkovCorr[i] - MarkovMean) *
-                     (MarkovCorr[i + k] - MarkovMean);
+
+   fAuto = fopen("Autocorrelator.txt", "w");
+   if (fAuto == NULL) {
+      perror("Error opening Autocorrelator.txt");
+      fclose(fRead);
+      free(Correlator);
+      return EXIT_FAILURE;
+   }
+
+   Correlator = (double *)malloc(Nsweeps * sizeof(double));
+   if (Correlator == NULL) {
+      perror("Error allocating memory for correlator data");
+      return EXIT_FAILURE;
+   }
+
+   for (j = 0; j < N; j++) {
+      rewind(fRead);
+      MeanCorrelator[j] = 0.0;
+      for (i = 0; i < Nsweeps; i++) {
+         for (k = 0; k < N; k++) {
+            if (fscanf(fRead, "%lf", &value) != 1) {
+               perror("Error reading Correlator.txt");
+               fclose(fAuto);
+               fclose(fRead);
+               free(Correlator);
+               return EXIT_FAILURE;
+            }
+            if (k == j) {
+               Correlator[i] = value;
+            }
          }
-         gamma /= Nsweeps - k;
-         fprintf(fAuto, "%d %f\n", k, gamma / Gamma0);
+         MeanCorrelator[j] += Correlator[i];
+      }
+      MeanCorrelator[j] /= Nsweeps;
+
+      Gamma0 = Gamma(Correlator, MeanCorrelator, Nsweeps, 0, j);
+      for (i = 0; i < maxLag; i++) {
+         fprintf(fAuto, "%.15e%s", Gamma(Correlator, MeanCorrelator, Nsweeps, i, j) / Gamma0,
+              i == maxLag - 1 ? "\n" : " ");
       }
    }
+
    fclose(fAuto);
+   fclose(fRead);
+   free(Correlator);
 
-   free(MarkovCorr);
-
-   exit(0);
+   return EXIT_SUCCESS;
 }
 

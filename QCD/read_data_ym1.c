@@ -1,17 +1,17 @@
 /*
- * read_data_ym1.c
- * This program reads data from a specific file. 
- * Data in define as to be specify fram log file.
- * 
- * Disclaimer: We specilize for .ms.dat files in order to 
- * get the decorrelated mesuere already. 
- *  
- */
-
+*******************************************************************************
+*
+* read_data_ym1.c
+*
+* This program reads data from a specific file.
+* In define are the parameters of the simulation, those can be read from
+* the log file. We specilize for .ms.dat files in order to get the
+* decorrelated mesure already.
+*
+******************************************************************************/
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdint.h>
 #include <string.h>
 
 #define t000 1
@@ -20,7 +20,7 @@
 #define t100 62
 #define t_0 6.2
 
-#define FILE_PATH "/Users/ffara/Desktop/LFC/QCDanomalies/test_run/dat/run1_20.ms.dat"
+#define FILE_PATH "/test_run/dat/run1_20.ms.dat"
 
 static struct{
     int dn, nn, tmax;
@@ -67,7 +67,7 @@ static void alloc_data(void)
     Yact = p;
     p += nn + 1;
     Qtop = p;
-}   
+}
 
 static void  read_file_head(void)
 {
@@ -130,7 +130,7 @@ static int read_data(void)
     if (ir != (1 + 3*(nn + 1)*tmax)) {
         fprintf(stderr, "read_data: read error\n");
     }
-    
+
     return 1;
 }
 
@@ -175,8 +175,8 @@ int main(int argc, char *argv[])
     }
 
     int i, t, n = 0;
-    
-    
+
+
     while (read_data() == 1) {
 
         for (i = 0; i <= file_head.nn; i++) {
@@ -188,7 +188,7 @@ int main(int argc, char *argv[])
 
         fprintf(fq, "%d", n);
         for (i = 0; i <= file_head.nn; i++) {
-            
+
             fprintf(fq, "\t%e", Q[i]);
         }
         fprintf(fq, "\n");

@@ -19,7 +19,7 @@ all: rmxeq mkdep mkxeq
 
 # main programs and required modules 
 
-MAIN = main0 main1
+MAIN = main0 main1 main2 main3
 
 RANDOM = ranlxs ranlxd gauss
 
